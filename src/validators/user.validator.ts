@@ -28,13 +28,44 @@ class UserValidator {
     next();
   };
 
+  public generateOtp = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
+      _id: Joi.string().required()
+    });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(error);
+    }
+    next();
+  };
+
+  public forgetPasswordOtp = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    const schema = Joi.object({
+      email: Joi.string().min(6).required()
+    });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(error);
+    }
+    next();
+  };
+
   public forgetPassword = (
     req: Request,
     res: Response,
     next: NextFunction
   ): void => {
     const schema = Joi.object({
-      email: Joi.string().email().required()
+      password: Joi.string().min(6).required()
     });
     const { error } = schema.validate(req.body);
     if (error) {
@@ -49,7 +80,25 @@ class UserValidator {
     next: NextFunction
   ): void => {
     const schema = Joi.object({
-      password: Joi.string().min(6).required()
+      password: Joi.string().min(6).required(),
+      _id: Joi.string().required()
+    });
+    const { error } = schema.validate(req.body);
+    if (error) {
+      next(error);
+    }
+    next();
+  };
+
+  public regenerateToken = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    const schema = Joi.object({
+      accessToken: Joi.string().required(),
+      refreshToken: Joi.string().required(),
+      _id: Joi.string().required()
     });
     const { error } = schema.validate(req.body);
     if (error) {

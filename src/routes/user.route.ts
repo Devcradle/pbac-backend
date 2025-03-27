@@ -1,7 +1,6 @@
 import express, { IRouter } from 'express';
 import userController from '../controllers/user.controller';
 import userValidator from '../validators/user.validator';
-import { userAuth } from '../middlewares/auth.middleware';
 
 class UserRoutes {
   private UserController = new userController();
@@ -13,24 +12,43 @@ class UserRoutes {
   }
 
   private routes = () => {
-    //route to get all users
-    this.router.get('', this.UserController.getAllUsers);
+    this.router.post('', this.UserValidator.signUp, this.UserController.signUp);
 
-    //route to create a new user
     this.router.post(
-      '',
-      this.UserValidator.newUser,
-      this.UserController.newUser
+      '/login',
+      this.UserValidator.login,
+      this.UserController.login
     );
 
-    //route to get a single user
-    this.router.get('/:_id', userAuth, this.UserController.getUser);
+    this.router.post(
+      '/generateOtp',
+      this.UserValidator.login,
+      this.UserController.generateOtp
+    );
 
-    //route to update a single user
-    this.router.put('/:_id', this.UserController.updateUser);
+    this.router.post(
+      '/forgetPasswordOtp',
+      this.UserValidator.login,
+      this.UserController.forgetPasswordOtp
+    );
 
-    //route to delete a single user
-    this.router.delete('/:_id', this.UserController.deleteUser);
+    this.router.post(
+      '/forgetPassword',
+      this.UserValidator.login,
+      this.UserController.forgetPassword
+    );
+
+    this.router.post(
+      '/resetPassword',
+      this.UserValidator.login,
+      this.UserController.resetPassword
+    );
+
+    this.router.post(
+      '/regenerateToken',
+      this.UserValidator.login,
+      this.UserController.regenerateToken
+    );
   };
 
   public getRoutes = (): IRouter => {

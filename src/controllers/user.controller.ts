@@ -13,17 +13,17 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
-  public getAllUsers = async (
+  public signUp = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> => {
     try {
-      const data = await this.UserService.getAllUsers();
-      res.status(HttpStatus.OK).json({
-        code: HttpStatus.OK,
+      const data = await this.UserService.signUp(req.body);
+      res.status(HttpStatus.CREATED).json({
+        code: HttpStatus.CREATED,
         data: data,
-        message: 'All users fetched successfully'
+        message: 'User created successfully'
       });
     } catch (error) {
       next(error);
@@ -36,17 +36,17 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
-  public getUser = async (
+  public login = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> => {
     try {
-      const data = await this.UserService.getUser(req.params._id);
+      const data = await this.UserService.login(req.body);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         data: data,
-        message: 'User fetched successfully'
+        message: 'User logged in successfully'
       });
     } catch (error) {
       next(error);
@@ -59,17 +59,17 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
-  public newUser = async (
+  public forgetPassword = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> => {
     try {
-      const data = await this.UserService.newUser(req.body);
-      res.status(HttpStatus.CREATED).json({
-        code: HttpStatus.CREATED,
+      const data = await this.UserService.forgetPassword(req.body);
+      res.status(HttpStatus.OK).json({
+        code: HttpStatus.OK,
         data: data,
-        message: 'User created successfully'
+        message: 'Success'
       });
     } catch (error) {
       next(error);
@@ -82,17 +82,17 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
-  public updateUser = async (
+  public generateOtp = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> => {
     try {
-      const data = await this.UserService.updateUser(req.params._id, req.body);
+      const data = await this.UserService.generateOtp(req.body);
       res.status(HttpStatus.ACCEPTED).json({
         code: HttpStatus.ACCEPTED,
         data: data,
-        message: 'User updated successfully'
+        message: 'Otp sent successfully'
       });
     } catch (error) {
       next(error);
@@ -105,17 +105,63 @@ class UserController {
    * @param {object} Response - response object
    * @param {Function} NextFunction
    */
-  public deleteUser = async (
+  public resetPassword = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> => {
     try {
-      await this.UserService.deleteUser(req.params._id);
+      await this.UserService.resetPassword(req.body);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         data: {},
-        message: 'User deleted successfully'
+        message: 'Password reset successfully'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Controller to delete a single user
+   * @param  {object} Request - request object
+   * @param {object} Response - response object
+   * @param {Function} NextFunction
+   */
+  public forgetPasswordOtp = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> => {
+    try {
+      await this.UserService.forgetPasswordOtp(req.body);
+      res.status(HttpStatus.OK).json({
+        code: HttpStatus.OK,
+        data: {},
+        message: 'Password reset successfully'
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  /**
+   * Controller to delete a single user
+   * @param  {object} Request - request object
+   * @param {object} Response - response object
+   * @param {Function} NextFunction
+   */
+  public regenerateToken = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> => {
+    try {
+      await this.UserService.regenerateToken(req.body);
+      res.status(HttpStatus.OK).json({
+        code: HttpStatus.OK,
+        data: {},
+        message: 'Tokens refreshed successfully'
       });
     } catch (error) {
       next(error);
